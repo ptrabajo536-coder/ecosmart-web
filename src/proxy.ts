@@ -45,7 +45,7 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(loginUrl);
   }
 
-  if (user && isPublicPath) {
+  if (user && isPublicPath && path !== "/reset-password") {
     return NextResponse.redirect(new URL("/rooms", request.url));
   }
 
