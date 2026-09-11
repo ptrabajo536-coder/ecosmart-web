@@ -37,8 +37,17 @@ export async function GET(request: NextRequest) {
   const user = await authenticateRequest(request);
   if (!user) return unauthorized();
 
+  const roomId = request.nextUrl.searchParams.get("room");
+  if (!roomId) {
+    const body: ApiErrorResponse = {
+      success: false,
+      error: 'El parámetro "room" es requerido.',
+    };
+    return withCors(NextResponse.json(body, { status: 400 }));
+  }
+
   try {
-    const status = await buildLightsStatus();
+    const status = await buildLightsStatus(roomId);
     return withCors(NextResponse.json(status, { status: 200 }));
   } catch (error) {
     console.error("[GET /api/lights] error:", error);
@@ -59,6 +68,15 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   const user = await authenticateRequest(request);
   if (!user) return unauthorized();
+
+  const roomId = request.nextUrl.searchParams.get("room");
+  if (!roomId) {
+    const body: ApiErrorResponse = {
+      success: false,
+      error: 'El parámetro "room" es requerido.',
+    };
+    return withCors(NextResponse.json(body, { status: 400 }));
+  }
 
   let payload: LightsActionRequest;
 
@@ -84,14 +102,14 @@ export async function POST(request: NextRequest) {
 
   try {
     if (action === "ON") {
-      await turnOnRelay(user.id);
+      await turnOnRelay(roomId, user.id);
     } else {
-      await turnOffRelay(user.id);
+      await turnOffRelay(roomId, user.id);
     }
 
-    await addHistoryEntry(action, user.id, user.email);
+    await addHistoryEntry(action, user.id, user.email, roomId);
 
-    const status = await buildLightsStatus();
+    const status = await buildLightsStatus(roomId);
     return withCors(NextResponse.json(status, { status: 200 }));
   } catch (error) {
     console.error("[POST /api/lights] error:", error);

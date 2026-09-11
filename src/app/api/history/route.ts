@@ -31,8 +31,17 @@ export async function GET(request: NextRequest) {
     return withCors(NextResponse.json(body, { status: 401 }));
   }
 
+  const roomId = request.nextUrl.searchParams.get("room");
+  if (!roomId) {
+    const body: ApiErrorResponse = {
+      success: false,
+      error: 'El parámetro "room" es requerido.',
+    };
+    return withCors(NextResponse.json(body, { status: 400 }));
+  }
+
   try {
-    const history = await getHistory();
+    const history = await getHistory(roomId);
     const body: HistoryResponse = { success: true, history };
     return withCors(NextResponse.json(body, { status: 200 }));
   } catch (error) {

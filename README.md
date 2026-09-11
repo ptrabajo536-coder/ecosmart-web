@@ -22,7 +22,8 @@ simulación** (sin hardware conectado todavía).
   fila en Postgres; en el futuro solo se reemplaza su interior para hablar
   con el dispositivo real.
 - `src/app/api/lights/route.ts` y `src/app/api/history/route.ts` — ahora
-  exigen sesión iniciada (401 si no hay usuario autenticado).
+  exigen sesión iniciada (401 si no hay usuario autenticado) y reciben el
+  salón mediante `?room=salon-a`.
 - `src/types/lights.ts` — contrato de datos compartido (esto es lo que la
   app Android también deberá usar).
 
@@ -84,11 +85,11 @@ algo local a cada sesión.
 ```
 Botón "Encender todas" (Dashboard.tsx)
   -> hook useLightsSystem.sendAction("ON")
-    -> fetch POST /api/lights
+    -> fetch POST /api/rooms/salon-a/lights
       -> route.ts valida sesión (Supabase Auth) y el body
-        -> deviceService.turnOnRelay(userId)
-          -> UPDATE relay_state en Postgres
-        -> historyService.addHistoryEntry("ON", userId, userEmail)
+        -> deviceService.turnOnRelay(roomId, userId)
+          -> UPDATE rooms en Postgres
+        -> historyService.addHistoryEntry("ON", userId, userEmail, roomId)
           -> INSERT en light_actions
       -> route.ts responde con el nuevo estado completo
     -> el frontend re-renderiza las 6 luces, el consumo y el historial
@@ -125,7 +126,8 @@ tipos) no depende directamente de Supabase.
 Según el plan de trabajo por etapas, lo siguiente es:
 
 - **Etapa 8-10:** app Android con Expo + React Native, consumiendo esta
-  misma API y el mismo login (`/api/lights`, `/api/history`, Supabase Auth).
+  misma API y el mismo login (`/api/lights?room=salon-a`,
+  `/api/history?room=salon-a`, Supabase Auth).
   → Ya está construida en `ecosmart-mobile/` (ver su propio README).
 - **Etapa 11:** generar el APK con EAS Build.
 - **Etapa 14:** investigar el protocolo real del Sonoff MINI R4 antes de
