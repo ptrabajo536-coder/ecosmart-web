@@ -1,0 +1,34 @@
+@import "tailwindcss";
+
+:root {
+  --eco-bg: #12161b;
+  --eco-surface: #191e24;
+  --eco-surface-raised: #1e242b;
+  --eco-border: #262c34;
+  --eco-text: #eceff3;
+  --eco-text-muted: #6b7684;
+  --eco-on: #39c87a;
+  --eco-on-dim: #1f4a34;
+  --eco-warn: #e8a33d;
+  --eco-off: #3a4149;
+}
+
+@theme inline {
+  --color-background: var(--eco-bg);
+  --color-foreground: var(--eco-text);
+  --font-sans: var(--font-plex-sans);
+  --font-mono: var(--font-plex-mono);
+}
+
+body {
+  background: var(--eco-bg);
+  color: var(--eco-text);
+  font-family: var(--font-plex-sans), ui-sans-serif, system-ui, sans-serif;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
