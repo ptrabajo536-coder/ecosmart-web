@@ -12,9 +12,9 @@ export function PowerPanel({ status, sending, onAction }: PowerPanelProps) {
   const relayOn = status?.relay.state === "ON";
 
   return (
-    <section className="grid gap-6 border-b border-[var(--eco-border)] px-6 py-8 md:grid-cols-[auto_1fr]">
+    <section className="power-panel grid gap-6 border-b border-[var(--eco-border)] px-6 py-8 md:grid-cols-[auto_1fr]">
       <div className="flex flex-col items-center gap-3">
-        <span className="font-mono text-[11px] tracking-wide text-[var(--eco-text-muted)]">
+        <span className="panel-kicker font-mono text-[11px] tracking-wide text-[var(--eco-text-muted)]">
           RELÉ PRINCIPAL
         </span>
 
@@ -23,7 +23,7 @@ export function PowerPanel({ status, sending, onAction }: PowerPanelProps) {
           disabled={sending}
           onClick={() => onAction(relayOn ? "OFF" : "ON")}
           aria-pressed={relayOn}
-          className="group relative flex h-32 w-32 flex-col items-center justify-center gap-1 rounded-md border-2 transition-colors disabled:cursor-not-allowed disabled:opacity-60"
+          className="relay-button group relative flex h-32 w-32 flex-col items-center justify-center gap-1 rounded-md border-2 transition-colors disabled:cursor-not-allowed disabled:opacity-60"
           style={{
             borderColor: relayOn ? "var(--eco-on)" : "var(--eco-border)",
             background: relayOn ? "var(--eco-on-dim)" : "var(--eco-surface)",
@@ -60,7 +60,7 @@ export function PowerPanel({ status, sending, onAction }: PowerPanelProps) {
         </div>
       </div>
 
-      <div className="grid grid-cols-3 gap-px overflow-hidden rounded-md border border-[var(--eco-border)] bg-[var(--eco-border)] self-start">
+      <div className="reading-grid grid grid-cols-3 gap-px overflow-hidden rounded-md border border-[var(--eco-border)] bg-[var(--eco-border)] self-start">
         <Reading
           label="luces encendidas"
           value={status ? `${status.lights.on}` : "—"}

@@ -4,7 +4,7 @@ import { loginAction } from "@/app/auth/actions";
 export default async function LoginPage({
   searchParams,
 }: {
-  searchParams: Promise<{ registered?: string }>;
+  searchParams: Promise<{ registered?: string; reset?: string }>;
 }) {
   const params = await searchParams;
 
@@ -28,10 +28,13 @@ export default async function LoginPage({
         linkLabel: "Regístrate",
         href: "/register",
       }}
+      secondaryLink={{ label: "¿Olvidaste tu contraseña?", href: "/forgot-password" }}
       notice={
         params.registered
           ? "Cuenta creada. Revisa tu correo si se te pide confirmarla, luego inicia sesión."
-          : null
+          : params.reset
+            ? "Contraseña actualizada. Ya puedes iniciar sesión."
+            : null
       }
     />
   );

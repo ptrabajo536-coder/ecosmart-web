@@ -9,7 +9,7 @@ export function MessageBanner({ message, tone }: MessageBannerProps) {
   return (
     <div
       role="status"
-      className="border-b px-6 py-2.5 font-mono text-xs"
+      className="message-banner border-b px-6 py-2.5 font-mono text-xs"
       style={{
         borderColor: "var(--eco-border)",
         background: tone === "error" ? "#2a1c1c" : "var(--eco-surface-raised)",

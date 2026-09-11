@@ -18,6 +18,7 @@ interface AuthFormProps {
   action: (state: AuthActionState, formData: FormData) => Promise<AuthActionState>;
   submitLabel: string;
   footer: { text: string; linkLabel: string; href: string };
+  secondaryLink?: { label: string; href: string };
   notice?: string | null;
 }
 
@@ -30,6 +31,7 @@ export function AuthForm({
   action,
   submitLabel,
   footer,
+  secondaryLink,
   notice,
 }: AuthFormProps) {
   const [state, formAction, pending] = useActionState(action, initialState);
@@ -87,6 +89,14 @@ export function AuthForm({
             {pending ? "Procesando..." : submitLabel}
           </button>
         </form>
+
+        {secondaryLink && (
+          <p className="mt-4 text-center font-mono text-xs">
+            <Link href={secondaryLink.href} className="text-[var(--eco-on)] underline">
+              {secondaryLink.label}
+            </Link>
+          </p>
+        )}
 
         <p className="mt-6 text-center font-mono text-xs text-[var(--eco-text-muted)]">
           {footer.text}{" "}

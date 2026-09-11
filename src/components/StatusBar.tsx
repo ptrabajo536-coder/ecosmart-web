@@ -21,7 +21,7 @@ function formatTime(iso: string | null): string {
 
 export function StatusBar({ roomName, mode, connected, updatedAt, userEmail }: StatusBarProps) {
   return (
-    <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[var(--eco-border)] px-6 py-4">
+    <div className="status-bar flex flex-wrap items-center justify-between gap-3 border-b border-[var(--eco-border)] px-6 py-4">
       <div className="flex items-baseline gap-2">
         <Link
           href="/rooms"
@@ -33,7 +33,7 @@ export function StatusBar({ roomName, mode, connected, updatedAt, userEmail }: S
         <span className="font-mono text-xs text-[var(--eco-text-muted)]">ECOsmart</span>
       </div>
 
-      <div className="flex items-center gap-4 font-mono text-xs text-[var(--eco-text-muted)]">
+      <div className="status-meta flex items-center gap-4 font-mono text-xs text-[var(--eco-text-muted)]">
         <span className="flex items-center gap-1.5">
           <span
             className={`h-1.5 w-1.5 rounded-full ${

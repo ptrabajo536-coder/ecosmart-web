@@ -6,9 +6,10 @@ interface HistoryLogProps {
 
 export function HistoryLog({ entries }: HistoryLogProps) {
   return (
-    <section className="px-6 py-8">
-      <h2 className="mb-4 font-mono text-[11px] tracking-wide text-[var(--eco-text-muted)]">
-        ÚLTIMAS ACCIONES
+    <section className="history-log px-6 py-8">
+      <h2 className="mb-4 flex items-center justify-between text-[15px] font-semibold text-[var(--eco-text)]">
+        Historial reciente
+        <span className="history-count">{entries.length}</span>
       </h2>
 
       {entries.length === 0 ? (

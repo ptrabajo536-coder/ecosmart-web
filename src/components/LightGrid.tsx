@@ -13,11 +13,11 @@ export function LightGrid({ lights }: LightGridProps) {
   }));
 
   return (
-    <section className="border-b border-[var(--eco-border)] px-6 py-8">
-      <h2 className="mb-4 font-mono text-[11px] tracking-wide text-[var(--eco-text-muted)]">
+    <section className="light-grid-section border-b border-[var(--eco-border)] px-6 py-8">
+      <h2 className="section-title mb-4 font-mono text-[11px] tracking-wide text-[var(--eco-text-muted)]">
         LUCES DEL SALÓN
       </h2>
-      <div className="grid grid-cols-2 gap-px overflow-hidden rounded-md border border-[var(--eco-border)] bg-[var(--eco-border)] sm:grid-cols-3 md:grid-cols-6">
+      <div className="light-grid grid grid-cols-2 gap-px overflow-hidden rounded-md border border-[var(--eco-border)] bg-[var(--eco-border)] sm:grid-cols-3 md:grid-cols-6">
         {items.map((light) => (
           <LightCard key={light.id} light={light} />
         ))}
