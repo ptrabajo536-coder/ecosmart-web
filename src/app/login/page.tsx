@@ -4,7 +4,12 @@ import { loginAction } from "@/app/auth/actions";
 export default async function LoginPage({
   searchParams,
 }: {
-  searchParams: Promise<{ registered?: string; reset?: string }>;
+  searchParams: Promise<{
+    registered?: string;
+    reset?: string;
+    error?: string;
+    reason?: string;
+  }>;
 }) {
   const params = await searchParams;
 
@@ -34,6 +39,8 @@ export default async function LoginPage({
           ? "Cuenta creada. Revisa tu correo si se te pide confirmarla, luego inicia sesión."
           : params.reset
             ? "Contraseña actualizada. Ya puedes iniciar sesión."
+            : params.error
+              ? `No se pudo validar el enlace: ${params.reason ?? "puede haber caducado o ya fue utilizado."}`
             : null
       }
     />
