@@ -65,6 +65,7 @@ export interface HistoryEntry {
 export interface LightsStatusResponse {
   success: true;
   mode: DeviceMode;
+  connected: boolean;
   relay: {
     state: RelayState;
   };

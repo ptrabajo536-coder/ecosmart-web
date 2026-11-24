@@ -65,7 +65,12 @@ export function useLightsSystem(roomId: string): UseLightsSystemResult {
       }
 
       setStatus(body);
-      setConnection("connected");
+      setConnection(body.connected ? "connected" : "disconnected");
+      setMessage(
+        body.connected
+          ? null
+          : "No fue posible conectar con el ESP32. Verifica que esté encendido y en la misma red Wi-Fi."
+      );
     } catch {
       setConnection("disconnected");
       setMessage("No fue posible comunicarse con el servidor.");
@@ -76,6 +81,8 @@ export function useLightsSystem(roomId: string): UseLightsSystemResult {
     // eslint-disable-next-line react-hooks/set-state-in-effect -- carga inicial al montar
     refreshStatus();
     refreshHistory();
+    const interval = window.setInterval(refreshStatus, 10_000);
+    return () => window.clearInterval(interval);
   }, [refreshStatus, refreshHistory]);
 
   const sendAction = useCallback(
@@ -99,12 +106,14 @@ export function useLightsSystem(roomId: string): UseLightsSystemResult {
         }
 
         setStatus(body);
-        setConnection("connected");
+        setConnection(body.connected ? "connected" : "disconnected");
         setCommand("idle");
         setMessage(
-          action === "ON"
-            ? "Luces encendidas correctamente."
-            : "Luces apagadas correctamente."
+          body.connected
+            ? action === "ON"
+              ? "Luces encendidas correctamente."
+              : "Luces apagadas correctamente."
+            : "La orden se guardó, pero el ESP32 no respondió recientemente."
         );
         refreshHistory();
       } catch {

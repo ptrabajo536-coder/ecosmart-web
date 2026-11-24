@@ -121,12 +121,20 @@ export async function getDeviceStatus(roomId: string): Promise<{
   relayState: RelayState;
   updatedAt: string;
   roomName: string;
+  connected: boolean;
 }> {
   const row = await readRoomRow(roomId);
+  const mode = getDeviceMode();
+  const lastSeen = Date.parse(row.updated_at);
+  const connected =
+    mode === "simulation" ||
+    (lastSeen > 0 && Date.now() - lastSeen < 60_000);
+
   return {
-    mode: getDeviceMode(),
+    mode,
     relayState: row.state,
     updatedAt: row.updated_at,
     roomName: row.name,
+    connected,
   };
 }

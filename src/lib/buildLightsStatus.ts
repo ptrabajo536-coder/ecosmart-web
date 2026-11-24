@@ -14,7 +14,7 @@ const LIGHT_NAMES = ["Luz 1", "Luz 2", "Luz 3", "Luz 4", "Luz 5", "Luz 6"];
  * ese salón — cada salón tiene su propio relé único, no 6 relés reales.
  */
 export async function buildLightsStatus(roomId: string): Promise<LightsStatusResponse> {
-  const { mode, relayState, updatedAt } = await getDeviceStatus(roomId);
+  const { mode, relayState, updatedAt, connected } = await getDeviceStatus(roomId);
 
   const items: LightUnit[] = LIGHT_NAMES.map((name, index) => ({
     id: index + 1,
@@ -29,6 +29,7 @@ export async function buildLightsStatus(roomId: string): Promise<LightsStatusRes
   return {
     success: true,
     mode,
+    connected,
     relay: { state: relayState },
     lights: {
       total: TOTAL_LIGHTS,

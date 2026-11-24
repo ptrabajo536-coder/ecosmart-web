@@ -50,6 +50,19 @@ export async function GET(request: NextRequest) {
   }
 
   const supabase = createAdminClient();
+  const now = new Date().toISOString();
+  const { error: heartbeatError } = await supabase
+    .from("rooms")
+    .update({ updated_at: now })
+    .eq("id", roomId);
+
+  if (heartbeatError) {
+    return NextResponse.json(
+      { success: false, error: "No fue posible registrar la actividad del dispositivo." },
+      { status: 500 }
+    );
+  }
+
   const { data, error } = await supabase
     .from("rooms")
     .select("state, updated_at")
